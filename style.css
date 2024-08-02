@@ -96,6 +96,8 @@ button {
 }
 
 /* ----------------------------------------- */
+/* INSTRUCTION POPUP SELF                    */
+/* ----------------------------------------- */
 .instructionPopUpSelf {
   font-family: "Creepster";
   font-size: 1rem;
@@ -155,12 +157,16 @@ button {
 }
 
 .gameOverPanelBtn {
-  position: relative;
-  bottom: -1rem;
-  display: flex;
+  background-color: rgb(80 134 165);
+  border-radius: 0.8rem;
+  border: 0.5px solid black;
+  width: 13rem;
+  height: 7rem;
   flex-direction: column;
+  display: flex;
   align-items: center;
-  z-index: 40;
+  justify-content: center;
+  gap: 0.2rem;
 }
 
 .returnToMenuBtn {
