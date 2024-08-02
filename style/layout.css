@@ -1,0 +1,100 @@
+.mainLayerAsRelative {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+/* ----------------------------------------- */
+
+.Overlayer_inMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: transparent;
+
+  min-height: calc(100% - 2rem);
+  width: 100%;
+  max-width: 720px;
+  z-index: 20;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Overlayer_inGame {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: transparent;
+
+  min-height: calc(100% - 2rem);
+  width: 100%;
+  max-width: 720px;
+  z-index: 20;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Overlayer_gameOver {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+
+  background-color: transparent;
+
+  min-height: calc(100% - 2rem);
+  width: 100%;
+  max-width: 720px;
+  z-index: 20;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding-bottom: 2rem;
+}
+
+/* ----------------------------------------- */
+
+.startScreenImage {
+  border-radius: 0.5rem;
+  object-fit: fill;
+
+  height: 480px;
+  width: 100%;
+  max-width: 720px;
+  z-index: 2;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.gameOverScreenImage {
+  border-radius: 0.5rem;
+  object-fit: fill;
+
+  height: 480px;
+  width: 100%;
+  max-width: 720px;
+  z-index: 2;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ----------------------------------------- */
