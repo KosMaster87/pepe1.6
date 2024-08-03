@@ -74,11 +74,14 @@ class Character extends MovableObject {
 
   idleStart;
   sleepStart;
+  idle = false;
+  sleep = false;
 
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.idleStart = Date.now();
     this.sleepStart = Date.now();
+
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
@@ -100,10 +103,10 @@ class Character extends MovableObject {
 
   sleepTimer() {
     let sleepTime = (Date.now() - this.sleepStart) / 1000;
-    return sleepTime >= 4;
+    return sleepTime >= 2.5;
   }
 
-  resetTimers_idle_sleep() {
+  resetTimers() {
     this.reset_idleStartTimer();
     this.reset_sleepStartTimer();
   }
@@ -135,10 +138,12 @@ class Character extends MovableObject {
 
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.pepeMoveRightOptions();
+      this.pepesIdle_false();
     }
 
     if (this.world.keyboard.LEFT && this.x > -500) {
       this.pepeMoveLeftOptions();
+      this.pepesIdle_false();
     }
 
     if (
@@ -146,8 +151,18 @@ class Character extends MovableObject {
       (this.world.keyboard.UP && !this.isAboveGround())
     ) {
       this.jump();
+      this.pepesIdle_false();
     }
     this.world.camera_x = -this.x + 150;
+  }
+
+  /**
+   *
+   */
+  pepesIdle_false() {
+    this.resetTimers();
+    this.idle = false;
+    this.sleep = false;
   }
 
   /**
@@ -163,19 +178,20 @@ class Character extends MovableObject {
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.animateWalking();
     } else if (
-      this.sleepTimer() &&
-      !this.isAboveGround() &&
-      !this.isHurt() &&
-      !this.isDead()
-    ) {
-      this.animateSleeping();
-    } else if (
       this.idleTimer() &&
       !this.isAboveGround() &&
       !this.isHurt() &&
       !this.isDead()
     ) {
-      this.animateIdle();
+      if (this.sleepTimer()) {
+        this.animateSleeping();
+        this.sleep = true;
+        this.idle = false;
+      } else {
+        this.animateIdle();
+        this.idle = true;
+        this.sleep = false;
+      }
     }
   }
 
@@ -185,7 +201,7 @@ class Character extends MovableObject {
 
   animateHurt() {
     this.playAnimation(this.IMAGES_HURT);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateDead() {
@@ -195,17 +211,17 @@ class Character extends MovableObject {
 
   animateJumping() {
     this.playAnimation(this.IMAGES_JUMPING);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateIdle() {
     this.playAnimation(this.IMAGES_IDLE);
-    this.reset_sleepStartTimer();
+    this.reset_idleStartTimer(); // Ist ja auf "true" bis durchinteraktion auf "false" oder durch "animateSleeping"
   }
 
   animateSleeping() {

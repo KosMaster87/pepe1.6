@@ -6,6 +6,17 @@ class DrawableObject {
   currentImage = 0;
 
   /**
+   * Das Object-Modell "offset" für die Figures.
+   * Mit offset hat man eine Feineinstellung des bereiches, wo die Objekte in Berührung kommen.
+   */
+  offset = {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  };
+
+  /**
    * Load image for any movable character.
    * @param {The path of the image to be loaded} path
    */
