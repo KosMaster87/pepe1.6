@@ -34,3 +34,14 @@ class Endboss extends MovableObject {
     );
   }
 }
+
+// ----------------------------------------------------------------------
+// Snipped from coworker
+// ----------------------------------------------------------------------
+// constructor(enemies,clouds,BackgroundObjects,coins,bottles,world) {
+//   this.enemies = enemies.map(enemy => {
+//       if (enemy instanceof Endboss) {
+//           return new Endboss(world); // Übergebe die World-Instanz hier
+//       }
+//       return enemy;
+//   });

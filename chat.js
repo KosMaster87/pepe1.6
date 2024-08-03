@@ -1,6 +1,14 @@
 "use strict";
 
 class Character extends MovableObject {
+  height = 170;
+  width = 95;
+  x = 0;
+  y = 270;
+  speed = 5;
+  world;
+  walking_sound = new Audio("./audio/walkingCharacter.mp3");
+
   IMAGES_WALKING = [
     "./img/2_character_pepe/2_walk/W-21.png",
     "./img/2_character_pepe/2_walk/W-22.png",
@@ -64,21 +72,15 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
-  height = 170;
-  width = 95;
-  x = 0;
-  y = 270;
-  speed = 5;
-  world;
-  walking_sound = new Audio("./audio/walkingCharacter.mp3");
-
   idleStart;
   sleepStart;
 
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
+
     this.idleStart = Date.now();
     this.sleepStart = Date.now();
+
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
@@ -95,15 +97,15 @@ class Character extends MovableObject {
 
   idleTimer() {
     let idleTime = (Date.now() - this.idleStart) / 1000;
-    return idleTime >= 0.1;
+    return idleTime >= 2;
   }
 
   sleepTimer() {
     let sleepTime = (Date.now() - this.sleepStart) / 1000;
-    return sleepTime >= 4;
+    return sleepTime >= 5;
   }
 
-  resetTimers_idle_sleep() {
+  resetTimers() {
     this.reset_idleStartTimer();
     this.reset_sleepStartTimer();
   }
@@ -156,26 +158,22 @@ class Character extends MovableObject {
   pepeAnimate() {
     if (this.isHurt() && !this.isDead()) {
       this.animateHurt();
+
     } else if (this.isDead()) {
       this.animateDead();
+
     } else if (this.isAboveGround()) {
       this.animateJumping();
+
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.animateWalking();
-    } else if (
-      this.sleepTimer() &&
-      !this.isAboveGround() &&
-      !this.isHurt() &&
-      !this.isDead()
-    ) {
+
+    } else if (this.sleepTimer() && !this.isAboveGround() && !this.isHurt() && !this.isDead()) {
       this.animateSleeping();
-    } else if (
-      this.idleTimer() &&
-      !this.isAboveGround() &&
-      !this.isHurt() &&
-      !this.isDead()
-    ) {
+
+    } else if (this.idleTimer() && !this.isAboveGround() && !this.isHurt() && !this.isDead()) {
       this.animateIdle();
+      
     }
   }
 
@@ -185,7 +183,7 @@ class Character extends MovableObject {
 
   animateHurt() {
     this.playAnimation(this.IMAGES_HURT);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateDead() {
@@ -195,12 +193,12 @@ class Character extends MovableObject {
 
   animateJumping() {
     this.playAnimation(this.IMAGES_JUMPING);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
-    this.resetTimers_idle_sleep();
+    this.resetTimers();
   }
 
   animateIdle() {
