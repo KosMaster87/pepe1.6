@@ -31,6 +31,7 @@ class ThrowableObject extends MovableObject {
     this.x = x;
     this.y = y;
     this.throw(800, 0);
+    this.animate();
   }
 
   /**
@@ -45,5 +46,18 @@ class ThrowableObject extends MovableObject {
     setStoppableInterval(() => {
       this.x += 10;
     }, 25);
+  }
+
+  /**
+   * Animate the throwable object
+   */
+  animate() {
+    setInterval(() => {
+      if (this.collide) {
+        this.playAnimation(this.IMAGES_SPLASH);
+      } else {
+        this.playAnimation(this.IMAGES_ROTATION);
+      }
+    }, 100);
   }
 }

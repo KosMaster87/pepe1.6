@@ -19,12 +19,12 @@ class MovableObject extends DrawableObject {
    * Das heisst, die im vorab geladenen "loadImages(array)", werden hier einzelt für die Bewegung zwischengespeichert.
    * @param {Array with images} images
    */
-  playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
-    this.currentImage++;
-  }
+  // playAnimation(images) {
+  //   let i = this.currentImage % images.length;
+  //   let path = images[i];
+  //   this.img = this.imageCache[path];
+  //   this.currentImage++;
+  // }
 
   // ###################################### colliding Manager START ###########################################
 
