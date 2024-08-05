@@ -74,7 +74,7 @@ function createLevel() {
     );
   });
 
-  return new Level(enemies, clouds, backgroundObjects), bottles;
+  return new Level(enemies, clouds, backgroundObjects, bottles);
 }
 
 /**

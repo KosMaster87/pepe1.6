@@ -1,24 +1,53 @@
-draw() {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+function createLevel() {
+  const chickens = createObjects(30, () => new Chicken());
+  const chicks = createObjects(30, () => new Chick());
+  const clouds = createObjects(30, () => new Cloud());
+  const bottles = createObjects(
+    10,
+    () => new Bottle(Math.random() * 4000, Math.random() * 300)
+  );
 
-  this.ctx.translate(this.camera_x, 0);
-  this.addObjectsToMap(this.level.background);
-  this.addObjectsToMap(this.level.clouds);
-  this.addObjectsToMap(this.level.enemies);
-  this.addObjectsToMap(this.level.bottles);
-  this.addObjectsToMap(this.throwableObjects);
-  this.ctx.translate(-this.camera_x, 0);
+  let enemies = [...chickens, ...chicks];
+  enemies.push(new Endboss());
 
-  this.addToMap(this.pepeStatusBar);
-  this.addToMap(this.coinStatusBar);
-  this.addToMap(this.bottleStatusBar);
+  const backgroundObjects = [];
+  const positions = [
+    -719,
+    0,
+    719,
+    719 * 2,
+    719 * 3,
+    719 * 4,
+    719 * 5,
+    719 * 6,
+    719 * 7,
+    719 * 8,
+  ];
 
-  this.ctx.translate(this.camera_x, 0);
-  this.addToMap(this.character);
-  this.ctx.translate(-this.camera_x, 0);
-
-  self = this;
-  requestAnimationFrame(function () {
-    self.draw();
+  positions.forEach((pos, index) => {
+    const layerNumber = (index % 2) + 1;
+    backgroundObjects.push(
+      new BackgroundObject("./img/5_background/layers/air.png", pos)
+    );
+    backgroundObjects.push(
+      new BackgroundObject(
+        `./img/5_background/layers/3_third_layer/${layerNumber}.png`,
+        pos
+      )
+    );
+    backgroundObjects.push(
+      new BackgroundObject(
+        `./img/5_background/layers/2_second_layer/${layerNumber}.png`,
+        pos
+      )
+    );
+    backgroundObjects.push(
+      new BackgroundObject(
+        `./img/5_background/layers/1_first_layer/${layerNumber}.png`,
+        pos
+      )
+    );
   });
+
+  return new Level(enemies, clouds, backgroundObjects, bottles);
 }
