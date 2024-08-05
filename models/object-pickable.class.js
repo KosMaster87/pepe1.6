@@ -5,6 +5,4 @@ class PickableObject extends DrawableObject {
     left: 0,
     right: 0,
   };
-
-
 }

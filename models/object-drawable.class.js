@@ -61,6 +61,8 @@ class DrawableObject {
    */
   drawFrame(ctx) {
     if (
+      this instanceof ThrowableObject ||
+      this instanceof Bottle ||
       this instanceof Character ||
       this instanceof Chicken ||
       this instanceof Chick ||
@@ -73,4 +75,6 @@ class DrawableObject {
       ctx.stroke();
     }
   }
+
+
 }
