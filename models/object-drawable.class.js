@@ -16,6 +16,11 @@ class DrawableObject {
     bottom: 0,
   };
 
+  x = 0;
+  y = 300;
+  height = 150;
+  width = 100;
+
   /**
    * Load image for any movable character.
    * @param {The path of the image to be loaded} path
