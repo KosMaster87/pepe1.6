@@ -13,7 +13,6 @@ class World {
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
 
-  throwableObjects = [new ThrowableObject()];
   throwableObjects = [];
 
   /**
@@ -50,10 +49,22 @@ class World {
     }, 200);
   }
 
+  // ----------------------------------------------------------------
+  // Prüfen der Berührung in der Map. START
+  // ----------------------------------------------------------------
+
   /**
-   * Just check if character collision with chicken.
+   * Check if Pepe collision with Objects.
    */
   checkCollisions() {
+    this.enemieStatus_relationPepe();
+    this.checkBottleStatus_toEarn();
+  }
+
+  /**
+   * Check if Pepe collision with opponent.
+   */
+  enemieStatus_relationPepe() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
@@ -63,17 +74,51 @@ class World {
   }
 
   /**
+   * Check if Pepe collision with Bottle.
+   */
+  checkBottleStatus_toEarn() {
+    this.level.bottles.forEach((bottle, index) => {
+      if (
+        this.character.isColliding(bottle) &&
+        this.character.bottles.length < this.character.maxBottles
+      ) {
+        this.character.collectBottle();
+        let newPercentage = Math.min(this.character.bottles.length * 20, 100);
+        this.bottleStatusBar.setPercentage(newPercentage);
+
+        console.log("Bottle collected:", this.character.bottles.length);
+        console.log("Bottle status bar updated:", newPercentage);
+
+        this.level.bottles.splice(index, 1);
+      }
+    });
+  }
+
+  /**
    * Flasche Werfen
    */
   checkThrowObject() {
-    if (this.keyboard.D) {
+    if (this.keyboard.THROW && this.character.bottles.length > 0) {
       let bottle = new ThrowableObject(
         this.character.x + 100,
         this.character.y + 100
       );
       this.throwableObjects.push(bottle);
+      this.character.bottles.pop();
+      this.bottleStatusBar.setPercentage(this.character.bottles.length * 20);
+      console.log(
+        "Bottle thrown. Bottles left:",
+        this.character.bottles.length
+      );
     }
   }
+
+  // ----------------------------------------------------------------
+  // Prüfen der Berührung in der Map. ENDE
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
+  // Alles rund ums Zeichnen. START
+  // ----------------------------------------------------------------
 
   /**
    * Draw() wird immer wieder aufgerufen.
@@ -82,28 +127,45 @@ class World {
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
+    this.addLevelObjects();
+    this.addObjectsToMap(this.throwableObjects);
+    this.ctx.translate(-this.camera_x, 0);
+    this.addBars();
+    this.ctx.translate(this.camera_x, 0);
+    this.addToMap(this.character);
+    this.ctx.translate(-this.camera_x, 0);
+    this.setSelfDraw();
+    self = this;
+  }
+
+  /**
+   *Zu Zeichnen!
+   */
+  addLevelObjects() {
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
-    this.addObjectsToMap(this.throwableObjects);
-    this.ctx.translate(-this.camera_x, 0);
+  }
 
+  /**
+   *Zu Zeichnen!
+   */
+  addBars() {
     this.addToMap(this.pepeStatusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
+  }
 
-    this.ctx.translate(this.camera_x, 0);
-    this.addToMap(this.character);
-    this.ctx.translate(-this.camera_x, 0);
-
-    self = this;
+  setSelfDraw() {
+    let self = this;
     requestAnimationFrame(function () {
       self.draw();
     });
   }
+
+  // ----------------------------------------------------------------
 
   /**
    * Die Fn ist nur eine Zwischenfunktion vom Zeichnen-Fn zum Zeichnen-addToMap, die auch eine Hilfsfunktion für die "draw"-Fn ist.
@@ -136,6 +198,8 @@ class World {
     }
   }
 
+  // ----------------------------------------------------------------
+
   /**
    * Die "Flips" sind zum Spiegeln der Bilder.
    * Den von rechts-nach-links zustand setzen.
@@ -157,4 +221,8 @@ class World {
     mo.x = mo.x * -1; // Das Koardinatensystem zu dem Bild muss auch noch gespiegelt werden.
     this.ctx.restore();
   }
+
+  // ----------------------------------------------------------------
+  // Alles rund ums Zeichnen. ENDE
+  // ----------------------------------------------------------------
 }

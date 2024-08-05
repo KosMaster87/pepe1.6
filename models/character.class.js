@@ -64,13 +64,17 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
+  walking_sound = new Audio("./audio/walkingCharacter.mp3");
+
   height = 170;
   width = 95;
   x = 0;
   y = 270;
   speed = 5;
   world;
-  walking_sound = new Audio("./audio/walkingCharacter.mp3");
+
+  bottles = [];
+  maxBottles = 5;
 
   idleStart;
   sleepStart;
@@ -81,7 +85,6 @@ class Character extends MovableObject {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.idleStart = Date.now();
     this.sleepStart = Date.now();
-
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
@@ -90,6 +93,14 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SLEEP);
     this.applyGravity();
     this.animate();
+  }
+
+  /**\
+   * Die Abfrage des Koliding stellt sich hier nicht sondern checkCollisions().
+   */
+  collectBottle() {
+    this.bottles.push(new Bottle());
+    console.log("Bottle collected:", this.bottles.length);
   }
 
   // -----------------------------------------------------------
