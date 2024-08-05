@@ -27,6 +27,10 @@ function createLevel() {
   const chickens = createObjects(30, () => new Chicken());
   const chicks = createObjects(30, () => new Chick());
   const clouds = createObjects(30, () => new Cloud());
+  const bottles = createObjects(
+    10,
+    () => new Bottle(Math.random() * 4000, Math.random() * 300)
+  );
 
   let enemies = [...chickens, ...chicks];
   enemies.push(new Endboss());
@@ -70,7 +74,7 @@ function createLevel() {
     );
   });
 
-  return new Level(enemies, clouds, backgroundObjects);
+  return new Level(enemies, clouds, backgroundObjects), bottles;
 }
 
 /**
@@ -79,6 +83,7 @@ function createLevel() {
 function initLevel() {
   level1 = createLevel();
 }
+
 // function initLevel() {
 //   const level1 = createLevel();
 // }

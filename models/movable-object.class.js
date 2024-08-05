@@ -8,6 +8,39 @@ class MovableObject extends DrawableObject {
   speedY = 0; // Geschwindigkeit nach unten.
   acceleration = 1; // Beschleunigung
 
+  /**
+   * The full value of an array with the images is iterated here,
+   * and a variable with the path of the images selected for playback is declared here.
+   * This means that the pre-loaded "load Images(array)" are cached here individually for movement.
+   *
+   * Der Vollwert eines Arrays mit den Bilder wird hier Iterriert,
+   * und eine Variable mit den Pfad der Bilder die zum Abspielen gewählt wurden,
+   * wird hier geklariert.
+   * Das heisst, die im vorab geladenen "loadImages(array)", werden hier einzelt für die Bewegung zwischengespeichert.
+   * @param {Array with images} images
+   */
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
+  // ###################################### colliding Manager START ###########################################
+
+  /**
+   * Berechnung des Bereiches für das jeweiliege Objekt.
+   */
+  isColliding(obj) {
+    return (
+      this.x + this.width - this.offset.right >= obj.x + obj.offset.left &&
+      this.x + this.offset.left <= obj.x + obj.width - obj.offset.right &&
+      this.y + this.height - this.offset.bottom >= obj.y + obj.offset.top &&
+      this.y + this.offset.top <= obj.y + obj.height - obj.offset.bottom
+    );
+  }
+
+  // ###################################### colliding Manager END ###########################################
   // ################################ applyGravity START #################################################
 
   /**
@@ -41,7 +74,6 @@ class MovableObject extends DrawableObject {
   // Die Bedingung für Pepe, um sich über dem Boden zu befinden, ist also this.y < 260.
 
   // ###################################### applyGravity END ###########################################
-
   // ###################################### Pepes animate START ###########################################
 
   /**
@@ -97,38 +129,4 @@ class MovableObject extends DrawableObject {
   }
 
   // ###################################### Pepes animate END ###########################################
-
-  /**
-   * The full value of an array with the images is iterated here,
-   * and a variable with the path of the images selected for playback is declared here.
-   * This means that the pre-loaded "load Images(array)" are cached here individually for movement.
-   *
-   * Der Vollwert eines Arrays mit den Bilder wird hier Iterriert,
-   * und eine Variable mit den Pfad der Bilder die zum Abspielen gewählt wurden,
-   * wird hier geklariert.
-   * Das heisst, die im vorab geladenen "loadImages(array)", werden hier einzelt für die Bewegung zwischengespeichert.
-   * @param {Array with images} images
-   */
-  playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
-    this.currentImage++;
-  }
-
-  // ###################################### colliding Manager START ###########################################
-
-  /**
-   * Berechnung des Bereiches für das jeweiliege Objekt.
-   */
-  isColliding(obj) {
-    return (
-      this.x + this.width - this.offset.right >= obj.x + obj.offset.left &&
-      this.x + this.offset.left <= obj.x + obj.width - obj.offset.right &&
-      this.y + this.height - this.offset.bottom >= obj.y + obj.offset.top &&
-      this.y + this.offset.top <= obj.y + obj.height - obj.offset.bottom
-    );
-  }
-
-  // ###################################### colliding Manager END ###########################################
 }
