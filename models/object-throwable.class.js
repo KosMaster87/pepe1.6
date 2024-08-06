@@ -25,6 +25,7 @@ class ThrowableObject extends MovableObject {
   throwIntervalId;
   rotateIntervalId;
   splashIntervalId;
+  xSpeed = 10;
 
   constructor(x, y, world, throwDirectionX = 1) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
@@ -44,7 +45,7 @@ class ThrowableObject extends MovableObject {
   throw() {
     this.applyGravity();
     this.throwIntervalId = setStoppableInterval(() => {
-      this.x += 10 * this.throwDirectionX;
+      this.x += this.xSpeed * this.throwDirectionX;
 
       // Kollision mit Feinden prüfen
       this.world.level.enemies.forEach((enemy) => {
@@ -56,6 +57,7 @@ class ThrowableObject extends MovableObject {
       if (this.y > this.groundY) {
         this.y = this.groundY;
         this.collide = true;
+        this.xSpeed = 2;
         this.startSplash();
       }
     }, 25);
@@ -67,11 +69,25 @@ class ThrowableObject extends MovableObject {
   handleEnemyCollision(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
-      enemy.hit(); // Gegner Schaden zufügen
+      this.xSpeed = 2;
+      if (enemy instanceof Endboss) {
+        enemy.hit(); // Trefferzähler des Bosses erhöhen
+      } else {
+        enemy.hit(); // Treffer bei anderen Feinden
+      }
       this.startSplash();
       // this.remove(); // Entfernt die Flasche nach einem Treffer
     }
   }
+  // handleEnemyCollision(enemy) {
+  //   if (this.isColliding(enemy) && !this.collide) {
+  //     this.collide = true;
+  //     this.xSpeed = 2;
+  //     enemy.hit();
+  //     this.startSplash();
+  //     // this.remove(); // Entfernt die Flasche nach einem Treffer
+  //   }
+  // }
 
   /**
    * Startet die Splash-Animation
@@ -108,14 +124,14 @@ class ThrowableObject extends MovableObject {
     console.log("Bottle removed from world.");
   }
 
-  /**
-   * Entfernt die Flasche aus der Welt
-   */
-  remove() {
-    this.world.throwableObjects = this.world.throwableObjects.filter(
-      (obj) => obj !== this
-    );
-  }
+  // /**
+  //  * Entfernt die Flasche aus der Welt
+  //  */
+  // remove() {
+  //   this.world.throwableObjects = this.world.throwableObjects.filter(
+  //     (obj) => obj !== this
+  //   );
+  // }
 
   /**
    * Animate the throwable object

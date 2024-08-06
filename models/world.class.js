@@ -10,6 +10,7 @@ class World {
   camera_x = 0;
 
   pepeStatusBar = new CharacterStatusBar();
+  bossStatusBar = new BossStatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
 
@@ -182,7 +183,9 @@ class World {
    *Zu Zeichnen!
    */
   addBars() {
+    console.log('Adding bars to map');
     this.addToMap(this.pepeStatusBar);
+    this.addToMap(this.bossStatusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
   }

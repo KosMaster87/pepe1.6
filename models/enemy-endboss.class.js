@@ -4,6 +4,7 @@ class Endboss extends MovableObject {
   height = 400;
   width = 300;
   y = 50;
+  hits = 0;
 
   IMAGES_ALERT = [
     "./img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -42,7 +43,6 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.x = 1200;
-    this.energy = 100;
     this.alerted = false;
     this.speed = 1;
     this.animate();
@@ -62,16 +62,22 @@ class Endboss extends MovableObject {
   }
 
   hit() {
-    this.energy -= 2;
-    if (this.energy <= 0) {
-      this.energy = 0;
+    this.hits += 1;
+    console.log(`Boss hit: ${this.hits}`);
+
+    if (this.hits >= 5) {
       this.die();
     } else {
-      clearInterval(this.animationInterval); // Stop current animation
+      clearInterval(this.animationInterval);
       this.playAnimation(this.IMAGES_HURT);
       setTimeout(() => {
-        this.animate(); // Restart walking animation
-      }, 500); // Duration of hurt animation (adjust as necessary)
+        this.animate();
+      }, 500);
+
+      // Aktualisiere die Boss-Statusleiste
+      if (this.world && this.world.bossStatusBar) {
+        this.world.bossStatusBar.updateBossHealth(this.hits);
+      }
     }
   }
 
