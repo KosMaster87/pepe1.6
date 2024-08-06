@@ -22,15 +22,4 @@ class Bottle extends PickableObject {
       this.playAnimation(this.IMAGES_SALSA_GROUND);
     }, 220);
   }
-
-  // /**
-  //  * Play an animation by cycling through the images in the given array.
-  //  * @param {Array of image paths} images
-  //  */
-  // playAnimation(images) {
-  //   let i = this.currentImage % images.length;
-  //   let path = images[i];
-  //   this.img = this.imageCache[path];
-  //   this.currentImage++;
-  // }
 }

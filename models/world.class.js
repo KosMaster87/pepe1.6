@@ -100,8 +100,9 @@ class World {
   checkThrowObject() {
     if (this.keyboard.THROW && this.character.bottles.length > 0) {
       let bottle = new ThrowableObject(
-        this.character.x + 100,
-        this.character.y + 100
+        this.character.x + 70,
+        this.character.y + 35,
+        this
       );
       this.throwableObjects.push(bottle);
       this.character.bottles.pop();

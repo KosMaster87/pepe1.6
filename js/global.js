@@ -9,6 +9,7 @@ let intervalIds = [];
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push(id);
+  return id;
   // console.log("Interval eingetragen mit ID: " + id);
 }
 
