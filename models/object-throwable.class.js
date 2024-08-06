@@ -26,13 +26,14 @@ class ThrowableObject extends MovableObject {
   rotateIntervalId;
   splashIntervalId;
 
-  constructor(x, y, world) {
+  constructor(x, y, world, throwDirectionX = 1) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_ROTATION);
     this.loadImages(this.IMAGES_SPLASH);
     this.world = world;
     this.x = x;
     this.y = y;
+    this.throwDirectionX = throwDirectionX;
     this.throw();
     this.animate();
   }
@@ -41,13 +42,11 @@ class ThrowableObject extends MovableObject {
    * Der Wurf der Flaschen.
    */
   throw() {
-    this.speedY = 10;
     this.applyGravity();
     this.throwIntervalId = setStoppableInterval(() => {
-      this.x += 10;
+      this.x += 10 * this.throwDirectionX;
       if (this.y > this.groundY) {
         this.y = this.groundY;
-        this.speedY = 0;
         this.collide = true;
         this.startSplash();
       }

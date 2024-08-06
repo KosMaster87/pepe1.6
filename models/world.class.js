@@ -99,10 +99,13 @@ class World {
    */
   checkThrowObject() {
     if (this.keyboard.THROW && this.character.bottles.length > 0) {
+      let throwDirectionX = this.character.otherDirection ? -1 : 1; // Links oder Rechts
+
       let bottle = new ThrowableObject(
-        this.character.x + 70,
+        this.character.x + (throwDirectionX === 1 ? 70 : -70), // Anpassen der x-Position je nach Richtung
         this.character.y + 35,
-        this
+        this,
+        throwDirectionX // Richtung übergeben
       );
       this.throwableObjects.push(bottle);
       this.character.bottles.pop();
