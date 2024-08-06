@@ -46,7 +46,19 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObject();
+      this.checkAlerts(); // Überprüfen, ob der Boss alarmiert werden muss
     }, 200);
+  }
+
+  /**
+   * Bislang nur für den Boss gedacht.
+   */
+  checkAlerts() {
+    this.level.enemies.forEach((enemy) => {
+      if (enemy instanceof Endboss) {
+        enemy.checkAlert(this.character);
+      }
+    });
   }
 
   // ----------------------------------------------------------------

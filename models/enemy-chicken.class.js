@@ -11,11 +11,14 @@ class Chicken extends MovableObject {
     "./img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
+  IMAGES_DEAD = ["./img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
+
   constructor() {
     super().loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
-    this.x = 200 + Math.random() * 10000; // Start the chicken in random place.
-    this.speed = 0.15 + Math.random() * 0.25; // Random speed!
+    this.loadImages(this.IMAGES_DEAD);
+    this.x = 200 + Math.random() * 10000;
+    this.speed = 0.15 + Math.random() * 0.25;
     this.animate();
   }
 
@@ -24,8 +27,29 @@ class Chicken extends MovableObject {
    * Also some animations.
    */
   animate() {
-    setStoppableInterval(() => this.moveLeft(), 1000 / 60);
-    setStoppableInterval(() => this.playAnimation(this.IMAGES_WALKING), 1000 / 7
+    this.walkingInterval = setStoppableInterval(
+      () => this.moveLeft(),
+      1000 / 60
     );
+    this.animationInterval = setStoppableInterval(
+      () => this.playAnimation(this.IMAGES_WALKING),
+      1000 / 7
+    );
+  }
+
+  hit() {
+    this.energy = 0;
+    this.die();
+  }
+
+  die() {
+    clearInterval(this.walkingInterval);
+    clearInterval(this.animationInterval);
+    this.playAnimation(this.IMAGES_DEAD);
+    setTimeout(() => {
+      this.world.level.enemies = this.world.level.enemies.filter(
+        (enemy) => enemy !== this
+      );
+    }, 700); // 700 Millisekunden warten, bis das Objekt entfernt wird
   }
 }

@@ -45,12 +45,29 @@ class ThrowableObject extends MovableObject {
     this.applyGravity();
     this.throwIntervalId = setStoppableInterval(() => {
       this.x += 10 * this.throwDirectionX;
+
+      // Kollision mit Feinden prüfen
+      this.world.level.enemies.forEach((enemy) => {
+        if (this.isColliding(enemy)) {
+          this.handleEnemyCollision(enemy);
+        }
+      });
+
       if (this.y > this.groundY) {
         this.y = this.groundY;
         this.collide = true;
         this.startSplash();
       }
     }, 25);
+  }
+
+  /**
+   * Kollision mit Feinden prüfen
+   */
+  handleEnemyCollision(enemy) {
+    this.collide = true;
+    enemy.hit(); // Gegner Schaden zufügen
+    this.startSplash();
   }
 
   /**
@@ -86,6 +103,15 @@ class ThrowableObject extends MovableObject {
       (obj) => obj !== this
     );
     console.log("Bottle removed from world.");
+  }
+
+  /**
+   * Entfernt die Flasche aus der Welt
+   */
+  remove() {
+    this.world.throwableObjects = this.world.throwableObjects.filter(
+      (obj) => obj !== this
+    );
   }
 
   /**
