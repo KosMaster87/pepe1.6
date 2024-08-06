@@ -44,14 +44,21 @@ class Endboss extends MovableObject {
     this.x = 1200;
     this.energy = 100;
     this.alerted = false;
+    this.speed = 1;
     this.animate();
   }
 
   animate() {
-    this.animationInterval = setStoppableInterval(
-      () => this.playAnimation(this.IMAGES_WALKING),
-      1000 / 7
-    );
+    this.animationInterval = setStoppableInterval(() => {
+      if (!this.alerted) {
+        this.moveLeft();
+      }
+      this.playAnimation(this.IMAGES_WALKING);
+    }, 1000 / 7);
+  }
+
+  moveLeft() {
+    this.x -= this.speed;
   }
 
   hit() {
@@ -60,7 +67,11 @@ class Endboss extends MovableObject {
       this.energy = 0;
       this.die();
     } else {
+      clearInterval(this.animationInterval); // Stop current animation
       this.playAnimation(this.IMAGES_HURT);
+      setTimeout(() => {
+        this.animate(); // Restart walking animation
+      }, 500); // Duration of hurt animation (adjust as necessary)
     }
   }
 
@@ -68,9 +79,11 @@ class Endboss extends MovableObject {
     clearInterval(this.animationInterval);
     this.playAnimation(this.IMAGES_DEAD);
     setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(
-        (enemy) => enemy !== this
-      );
+      if (this.world && this.world.level && this.world.level.enemies) {
+        this.world.level.enemies = this.world.level.enemies.filter(
+          (enemy) => enemy !== this
+        );
+      }
     }, 700);
   }
 

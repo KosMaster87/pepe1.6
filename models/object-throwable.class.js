@@ -65,9 +65,12 @@ class ThrowableObject extends MovableObject {
    * Kollision mit Feinden prüfen
    */
   handleEnemyCollision(enemy) {
-    this.collide = true;
-    enemy.hit(); // Gegner Schaden zufügen
-    this.startSplash();
+    if (this.isColliding(enemy) && !this.collide) {
+      this.collide = true;
+      enemy.hit(); // Gegner Schaden zufügen
+      this.startSplash();
+      // this.remove(); // Entfernt die Flasche nach einem Treffer
+    }
   }
 
   /**

@@ -71,6 +71,7 @@ class World {
   checkCollisions() {
     this.enemieStatus_relationPepe();
     this.checkBottleStatus_toEarn();
+    this.checkThrowableObjectCollisions(); // Hinzufügen der Überprüfung für geworfene Objekte
   }
 
   /**
@@ -107,6 +108,17 @@ class World {
   }
 
   /**
+   * 
+   */
+  checkThrowableObjectCollisions() {
+    this.throwableObjects.forEach((throwableObject) => {
+      this.level.enemies.forEach((enemy) => {
+        throwableObject.handleEnemyCollision(enemy);
+      });
+    });
+  }
+
+  /**
    * Flasche Werfen
    */
   checkThrowObject() {
@@ -119,6 +131,7 @@ class World {
         this,
         throwDirectionX // Richtung übergeben
       );
+      bottle.world = this; // Setzt die Welt-Eigenschaft für die Flasche
       this.throwableObjects.push(bottle);
       this.character.bottles.pop();
       this.bottleStatusBar.setPercentage(this.character.bottles.length * 20);
@@ -145,11 +158,11 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addLevelObjects();
-    this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     this.addBars();
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
+    this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     this.setSelfDraw();
     self = this;
