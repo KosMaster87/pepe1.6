@@ -7,7 +7,7 @@ class Bottle extends PickableObject {
   constructor(x, y) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_SALSA_GROUND);
-    this.x = 250 + Math.random() * 720 * 4;
+    this.x = -250 + Math.random() * 720 * 4;
     this.y = 370 + Math.random();
     this.width = 50;
     this.height = 60;

@@ -86,12 +86,18 @@ class World {
 
   /**
    * Check if Pepe collision with opponent.
+   * So jump on the enemy to kill him or take damage yourself.
    */
   enemieStatus_relationPepe() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.pepeStatusBar.setPercentage(this.character.energy);
+        if (this.character.isAboveGround() && this.character.speedY < 0) {
+          enemy.hit_anyOpponent();
+          this.character.speedY = 10; // Jump and run.
+        } else {
+          this.character.hit();
+          this.pepeStatusBar.setPercentage(this.character.energy);
+        }
       }
     });
   }
@@ -171,7 +177,7 @@ class World {
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     this.setSelfDraw();
-    self = this;
+    // self = this;
   }
 
   /**

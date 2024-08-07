@@ -27,7 +27,7 @@ function createLevel() {
   const chickens = createObjects(3, () => new Chicken());
   const chicks = createObjects(3, () => new Chick());
   const clouds = createObjects(30, () => new Cloud());
-  const bottles = createObjects(10, () => new Bottle());
+  const bottles = createObjects(30, () => new Bottle());
 
   let enemies = [...chickens, ...chicks];
   enemies.push(new Endboss());
