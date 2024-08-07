@@ -91,7 +91,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Zugefügter Schaden am Charakter in der Statusleiste.
+   * Zugefügter Schaden am Charakter in der Statusleiste. MUSS AUCH FÜR ENEMIES GEMACHT WERDEN.
    */
   hit() {
     this.energy -= 10;

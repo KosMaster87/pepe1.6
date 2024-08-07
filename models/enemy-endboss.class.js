@@ -1,11 +1,6 @@
 "use strict";
 
 class Endboss extends MovableObject {
-  height = 400;
-  width = 300;
-  y = 50;
-  hits = 0;
-
   IMAGES_ALERT = [
     "./img/4_enemie_boss_chicken/2_alert/G5.png",
     "./img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -36,6 +31,11 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  height = 400;
+  width = 300;
+  y = 50;
+  hits = 0;
+
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -61,10 +61,11 @@ class Endboss extends MovableObject {
     this.x -= this.speed;
   }
 
-  hit() {
+  /**
+   * Logik für Treffer an dem Gegner.
+   */
+  hit_Boss() {
     this.hits += 1;
-    console.log(`Boss hit: ${this.hits}`);
-
     if (this.hits >= 5) {
       this.die();
     } else {
@@ -73,29 +74,20 @@ class Endboss extends MovableObject {
       setTimeout(() => {
         this.animate();
       }, 500);
-
-      // Aktualisiere die Boss-Statusleiste
-      if (this.world && this.world.bossStatusBar) {
-        this.world.bossStatusBar.updateBossHealth(this.hits);
-      }
     }
   }
 
+  /**
+   * Tötungslogik für das Huhn.
+   */
   die() {
     clearInterval(this.animationInterval);
     this.playAnimation(this.IMAGES_DEAD);
     setTimeout(() => {
-      if (this.world && this.world.level && this.world.level.enemies) {
-        this.world.level.enemies = this.world.level.enemies.filter(
-          (enemy) => enemy !== this
-        );
-      }
+      this.world.level.enemies = this.world.level.enemies.filter(
+        (enemy) => enemy !== this
+      );
     }, 700);
-  }
-
-  alert() {
-    clearInterval(this.animationInterval);
-    this.playAnimation(this.IMAGES_ALERT);
   }
 
   checkAlert(character) {
@@ -103,6 +95,11 @@ class Endboss extends MovableObject {
       this.alerted = true;
       this.alert();
     }
+  }
+
+  alert() {
+    clearInterval(this.animationInterval);
+    this.playAnimation(this.IMAGES_ALERT);
   }
 
   isCloseTo(character, distance) {

@@ -66,7 +66,7 @@ class Keyboard {
         break;
       case 68:
         this.THROW = false;
-        console.log("Pepe has throw.");
+        // console.log("Pepe has throw.");
         break;
     }
   }
@@ -106,7 +106,7 @@ class Keyboard {
 
     if (throwButton) {
       throwButton.addEventListener("touchstart", () => {
-        console.log("Pepe has throw.");
+        // console.log("Pepe has throw.");
       });
     }
   }

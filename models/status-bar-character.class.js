@@ -16,7 +16,7 @@ class CharacterStatusBar extends DrawableObject {
     this.x = 10;
     this.width = 200;
     this.height = 60;
-    this.loadImages(this.IMAGES); // Wie gehabt, in der DrawableObject zum Zeichnen der Bilder.
+    this.loadImages(this.IMAGES);
     this.setPercentage(100);
   }
 

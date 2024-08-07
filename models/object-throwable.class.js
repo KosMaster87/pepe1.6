@@ -50,7 +50,7 @@ class ThrowableObject extends MovableObject {
       // Kollision mit Feinden prüfen
       this.world.level.enemies.forEach((enemy) => {
         if (this.isColliding(enemy)) {
-          this.handleEnemyCollision(enemy);
+          this.handleEnemyCollision_thisBottle(enemy);
         }
       });
 
@@ -66,35 +66,25 @@ class ThrowableObject extends MovableObject {
   /**
    * Kollision mit Feinden prüfen
    */
-  handleEnemyCollision(enemy) {
+  handleEnemyCollision_thisBottle(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
       this.xSpeed = 2;
       if (enemy instanceof Endboss) {
-        enemy.hit(); // Trefferzähler des Bosses erhöhen
+        enemy.hit_Boss();
       } else {
-        enemy.hit(); // Treffer bei anderen Feinden
+        enemy.hit_anyOpponent();
       }
       this.startSplash();
-      // this.remove(); // Entfernt die Flasche nach einem Treffer
     }
   }
-  // handleEnemyCollision(enemy) {
-  //   if (this.isColliding(enemy) && !this.collide) {
-  //     this.collide = true;
-  //     this.xSpeed = 2;
-  //     enemy.hit();
-  //     this.startSplash();
-  //     // this.remove(); // Entfernt die Flasche nach einem Treffer
-  //   }
-  // }
 
   /**
    * Startet die Splash-Animation
    */
   startSplash() {
     if (this.rotateIntervalId) {
-      clearInterval(this.rotateIntervalId); // Stoppe den Rotations-Intervall
+      clearInterval(this.rotateIntervalId);
     }
 
     this.splashIntervalId = setInterval(() => {
@@ -104,15 +94,14 @@ class ThrowableObject extends MovableObject {
     // Nach einer bestimmten Zeit, entferne die Flasche
     setTimeout(() => {
       clearInterval(this.splashIntervalId);
-      this.stop();
-    }, 700); // Warte 700 Millisekunden für die Splash-Animation
+      this.removeBottle();
+    }, 700);
   }
 
   /**
    * Entferne die Flasche aus der Welt, wenn sie den Boden berührt
    */
-  stop() {
-    console.log("Stopping intervals.");
+  removeBottle() {
     clearInterval(this.throwIntervalId);
     if (this.splashIntervalId) {
       clearInterval(this.splashIntervalId);
@@ -121,17 +110,7 @@ class ThrowableObject extends MovableObject {
     this.world.throwableObjects = this.world.throwableObjects.filter(
       (obj) => obj !== this
     );
-    console.log("Bottle removed from world.");
   }
-
-  // /**
-  //  * Entfernt die Flasche aus der Welt
-  //  */
-  // remove() {
-  //   this.world.throwableObjects = this.world.throwableObjects.filter(
-  //     (obj) => obj !== this
-  //   );
-  // }
 
   /**
    * Animate the throwable object

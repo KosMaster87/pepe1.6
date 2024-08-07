@@ -100,7 +100,6 @@ class Character extends MovableObject {
    */
   collectBottle() {
     this.bottles.push(new Bottle());
-    console.log("Bottle collected:", this.bottles.length);
   }
 
   // -----------------------------------------------------------

@@ -28,10 +28,6 @@ function createLevel() {
   const chicks = createObjects(3, () => new Chick());
   const clouds = createObjects(30, () => new Cloud());
   const bottles = createObjects(10, () => new Bottle());
-  // const bottles = createObjects(
-  //   30,
-  //   () => new Bottle(Math.random() * 4000, Math.random() * 300)
-  // );
 
   let enemies = [...chickens, ...chicks];
   enemies.push(new Endboss());
@@ -79,6 +75,7 @@ function createLevel() {
 }
 
 /**
+ * Initialisiere das Level und erstelle die Level-Objekte.
  * Soll erst beim Starten des Spieles gesetzt werden.
  */
 function initLevel() {

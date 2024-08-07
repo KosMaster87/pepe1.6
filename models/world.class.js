@@ -1,32 +1,41 @@
 "use strict";
 
 class World {
-  level = level1;
+  level;
   character = new Character();
-
   ctx;
   canvas;
   keyboard;
   camera_x = 0;
-
   pepeStatusBar = new CharacterStatusBar();
   bossStatusBar = new BossStatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
-
   throwableObjects = [];
 
   /**
    * First step to add the draw in this document.
+   * Erstellt eine neue World-Instanz.
+   * @param {HTMLCanvasElement} canvas
+   * @param {Keyboard} keyboard
+   * @param {Level} level
    * @param {init in the game.js} canvas
    */
-  constructor(canvas) {
+  constructor(canvas, keyboard, level1) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.level = level1;
     this.draw();
+    this.assignWorldToEnemies();
     this.setWorld();
     this.run();
+  }
+
+  assignWorldToEnemies() {
+    this.level.enemies.forEach((enemy) => {
+      enemy.world = this;
+    });
   }
 
   /**
@@ -99,22 +108,18 @@ class World {
         this.character.collectBottle();
         let newPercentage = Math.min(this.character.bottles.length * 20, 100);
         this.bottleStatusBar.setPercentage(newPercentage);
-
-        console.log("Bottle collected:", this.character.bottles.length);
-        console.log("Bottle status bar updated:", newPercentage);
-
         this.level.bottles.splice(index, 1);
       }
     });
   }
 
   /**
-   * 
+   *
    */
   checkThrowableObjectCollisions() {
     this.throwableObjects.forEach((throwableObject) => {
       this.level.enemies.forEach((enemy) => {
-        throwableObject.handleEnemyCollision(enemy);
+        throwableObject.handleEnemyCollision_thisBottle(enemy);
       });
     });
   }
@@ -124,22 +129,18 @@ class World {
    */
   checkThrowObject() {
     if (this.keyboard.THROW && this.character.bottles.length > 0) {
-      let throwDirectionX = this.character.otherDirection ? -1 : 1; // Links oder Rechts
+      let throwDirectionX = this.character.otherDirection ? -1 : 1;
 
       let bottle = new ThrowableObject(
-        this.character.x + (throwDirectionX === 1 ? 70 : -70), // Anpassen der x-Position je nach Richtung
+        this.character.x + (throwDirectionX === 1 ? 70 : -70),
         this.character.y + 35,
         this,
-        throwDirectionX // Richtung übergeben
+        throwDirectionX
       );
-      bottle.world = this; // Setzt die Welt-Eigenschaft für die Flasche
+      bottle.world = this;
       this.throwableObjects.push(bottle);
       this.character.bottles.pop();
       this.bottleStatusBar.setPercentage(this.character.bottles.length * 20);
-      console.log(
-        "Bottle thrown. Bottles left:",
-        this.character.bottles.length
-      );
     }
   }
 
@@ -183,7 +184,6 @@ class World {
    *Zu Zeichnen!
    */
   addBars() {
-    console.log('Adding bars to map');
     this.addToMap(this.pepeStatusBar);
     this.addToMap(this.bossStatusBar);
     this.addToMap(this.coinStatusBar);

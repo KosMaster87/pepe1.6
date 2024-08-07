@@ -25,7 +25,6 @@ class BottleStatusBar extends DrawableObject {
     this.percentage = Math.max(0, Math.min(100, percentage));
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
-    console.log("BottleStatusBar percentage set to:", this.percentage);
   }
 
   resolveImageIndex() {
