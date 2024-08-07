@@ -106,9 +106,10 @@ class World {
         this.character.bottles.length < this.character.maxBottles
       ) {
         this.character.collectBottle();
+        this.level.bottles.splice(index, 1);
+
         let newPercentage = Math.min(this.character.bottles.length * 20, 100);
         this.bottleStatusBar.setPercentage(newPercentage);
-        this.level.bottles.splice(index, 1);
       }
     });
   }
@@ -125,7 +126,8 @@ class World {
   }
 
   /**
-   * Flasche Werfen
+   * Flasche erstellen und Werfen.
+   * Die Wurfrichtung der Flasche und die Flaschenanzahl von Pepe prüfen.
    */
   checkThrowObject() {
     if (this.keyboard.THROW && this.character.bottles.length > 0) {
@@ -137,6 +139,8 @@ class World {
         this,
         throwDirectionX
       );
+
+      // erklähren lasssen.
       bottle.world = this;
       this.throwableObjects.push(bottle);
       this.character.bottles.pop();

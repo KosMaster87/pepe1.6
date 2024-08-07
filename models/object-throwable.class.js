@@ -17,7 +17,7 @@ class ThrowableObject extends MovableObject {
     "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
-  world;
+  // world;
   width = 40;
   height = 40;
   collide = false;
@@ -31,7 +31,7 @@ class ThrowableObject extends MovableObject {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_ROTATION);
     this.loadImages(this.IMAGES_SPLASH);
-    this.world = world;
+    // this.world = world;
     this.x = x;
     this.y = y;
     this.throwDirectionX = throwDirectionX;
@@ -40,7 +40,7 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Der Wurf der Flaschen.
+   * Setze den Wurf der Flaschen.
    */
   throw() {
     this.applyGravity();
