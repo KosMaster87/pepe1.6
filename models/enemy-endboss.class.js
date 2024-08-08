@@ -47,6 +47,7 @@ class Endboss extends MovableObject {
   y = 50;
   hits = 0; // Sind zum Zähler für Sterben und Statusleiste.
   alerted = false;
+  gameWin_sound = new Audio("./audio/win.mp3");
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
@@ -62,6 +63,9 @@ class Endboss extends MovableObject {
     this.checkDistanceToCharacter();
   }
 
+  /**
+   * Laufen Animation ist OK.
+   */
   animate() {
     this.animationInterval = setStoppableInterval(() => {
       if (!this.alerted) {
@@ -71,9 +75,9 @@ class Endboss extends MovableObject {
     }, 200);
   }
 
-  moveLeft() {
-    this.x -= this.speed;
-  }
+  // moveLeft() {
+  //   this.x -= this.speed;
+  // }
 
   hit_anyOpponent() {
     this.hit_Boss();
@@ -115,6 +119,7 @@ class Endboss extends MovableObject {
     }, 700);
 
     setTimeout(() => {
+      this.gameWin_sound.play();
       gameOver();
     }, 1000);
   }

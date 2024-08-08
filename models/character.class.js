@@ -64,7 +64,13 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
-  walking_sound = new Audio("./audio/walkingCharacter.mp3");
+  sounds = {
+    walking: new Audio("./audio/walkingCharacter.mp3"),
+    bottleEarn: new Audio("./audio/blob.mp3"),
+    bottleThrow: new Audio("./audio/throw.mp3"),
+    bottleSplash: new Audio("./audio/splash.mp3"),
+    gameLose: new Audio("./audio/loose.mp3"),
+  };
 
   height = 170;
   width = 95;
@@ -95,11 +101,19 @@ class Character extends MovableObject {
     this.animate();
   }
 
-  /**\
-   * Die Abfrage des Koliding stellt sich hier nicht sondern checkCollisions().
+  /**
+   *
    */
   collectBottle() {
     this.bottles.push(new Bottle());
+    this.playSound("bottleEarn");
+  }
+
+  playSound(soundKey) {
+    if (this.sounds[soundKey]) {
+      this.sounds[soundKey].currentTime = 0;
+      this.sounds[soundKey].play();
+    }
   }
 
   // -----------------------------------------------------------
@@ -144,7 +158,8 @@ class Character extends MovableObject {
    * Control Pepe using the enter keys.
    */
   pepeMove() {
-    this.walking_sound.pause();
+    // this.walking_sound.pause();
+    this.sounds.walking.pause();
 
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.pepeMoveRightOptions();
@@ -216,6 +231,8 @@ class Character extends MovableObject {
 
   animateDead() {
     this.playAnimation(this.IMAGES_DEAD);
+    // this.gameLose_sound.play();
+    this.playSound("gameLose");
     gameOver();
   }
 
@@ -227,6 +244,7 @@ class Character extends MovableObject {
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
     this.resetTimers();
+    this.playSound("walking");
   }
 
   animateIdle() {
@@ -246,7 +264,7 @@ class Character extends MovableObject {
   pepeMoveRightOptions() {
     this.moveRight();
     this.otherDirection = false;
-    this.walking_sound.play();
+    // this.walking_sound.play();
   }
 
   /**
@@ -255,6 +273,6 @@ class Character extends MovableObject {
   pepeMoveLeftOptions() {
     this.moveLeft();
     this.otherDirection = true;
-    this.walking_sound.play();
+    // this.walking_sound.play();
   }
 }

@@ -8,6 +8,9 @@ class MovableObject extends DrawableObject {
   speedY = 0; // Geschwindigkeit nach unten.
   acceleration = 1; // Beschleunigung
 
+  pepeHit_sound = new Audio("./audio/hit.mp3");
+  pepeJump_sound = new Audio("./audio/jump.mp3");
+
   // ###################################### colliding Manager START ###########################################
 
   /**
@@ -78,6 +81,7 @@ class MovableObject extends DrawableObject {
    */
   jump() {
     this.speedY = 15;
+    this.pepeJump_sound.play();
   }
 
   /**
@@ -91,9 +95,10 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Zugefügter Schaden am Charakter in der Statusleiste. MUSS AUCH FÜR ENEMIES GEMACHT WERDEN.
+   * Zugefügter Schaden am Charakter in der Statusleiste.
    */
-  hit() {
+  hitPepe() {
+    this.pepeHit_sound.play();
     this.energy -= 10;
     if (this.energy < 0) {
       this.energy = 0;
@@ -107,6 +112,7 @@ class MovableObject extends DrawableObject {
    * @returns Boolean
    */
   isDead() {
+    // this.pepeHit_sound.play();
     return this.energy == 0;
   }
 

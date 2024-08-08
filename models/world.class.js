@@ -60,6 +60,10 @@ class World {
     }, 200);
   }
 
+  // ----------------------------------------------------------------
+  // Prüfen der Berührung in der Map. START
+  // ----------------------------------------------------------------
+
   /**
    * Bislang nur für den Boss gedacht.
    */
@@ -70,10 +74,6 @@ class World {
       }
     });
   }
-
-  // ----------------------------------------------------------------
-  // Prüfen der Berührung in der Map. START
-  // ----------------------------------------------------------------
 
   /**
    * Check if Pepe collision with Objects.
@@ -95,7 +95,7 @@ class World {
           enemy.hit_anyOpponent();
           this.character.speedY = 10; // Jump and run.
         } else {
-          this.character.hit();
+          this.character.hitPepe();
           this.pepeStatusBar.setPercentage(this.character.energy);
         }
       }
